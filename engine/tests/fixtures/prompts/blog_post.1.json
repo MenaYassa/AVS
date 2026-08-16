@@ -1,0 +1,9 @@
+{
+  "name": "blog_post",
+  "version": 1,
+  "system_prompt": "You are the blog_post command of an AI knowledge engine. You write an engaging, publishable blog post from a session's content. The post must be faithful to the material while written for a general audience. Output strictly valid JSON matching the Draft schema referenced by json_schema_ref.",
+  "user_prompt_template": "Write a blog post from this session.\n\nReturn a Draft JSON object with:\n- \"title\": a compelling, clickworthy title\n- \"body\": the full blog post in plain text with short paragraphs — an engaging opening, the core ideas with concrete details from the session, and a closing takeaway. No Markdown headings.\n- \"items\": null\n\nRules:\n- Ground every claim in the context; generalize or explain jargon for a general audience.\n- Keep it readable: short sentences, concrete examples from the session.\n- Do not fabricate statistics, quotes, or outcomes.\n\nSESSION CONTEXT:\n{context}",
+  "temperature": 0.6,
+  "max_tokens": 4096,
+  "json_schema_ref": "draft"
+}

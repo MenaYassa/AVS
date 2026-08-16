@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../core/secure_storage/secure_store.dart';
@@ -296,38 +295,19 @@ class _AuthTile extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final auth = ref.watch(authControllerProvider);
     final userId = auth.valueOrNull;
-    final isLoading = auth.isLoading;
-
     return ListTile(
       leading: const Icon(Icons.account_circle_outlined),
-      title: Text(userId == null ? 'Account' : 'Signed in'),
-      subtitle: Text(
-        userId != null
-            ? userId
-            : (auth.hasError
-                ? 'Sign-in failed. Tap to retry.'
-                : 'Sign in to sync with Supabase cloud'),
-        style: TextStyle(
-          color: auth.hasError ? Colors.redAccent : null,
-        ),
-      ),
-      trailing: isLoading
-          ? const SizedBox(
-              width: 20,
-              height: 20,
-              child: CircularProgressIndicator(strokeWidth: 2),
+      title: Text(userId == null ? 'Signed out' : 'Signed in'),
+      subtitle: Text(userId ?? 'No cloud sync'),
+      trailing: userId == null
+          ? TextButton(
+              onPressed: () => ref.read(authControllerProvider.notifier).signInWithGoogle(),
+              child: const Text('Sign in'),
             )
-          : (userId == null
-              ? FilledButton.tonal(
-                  onPressed: () => context.push('/auth'),
-                  child: const Text('Sign in'),
-                )
-              : OutlinedButton(
-                  onPressed: () =>
-                      ref.read(authControllerProvider.notifier).signOut(),
-                  child: const Text('Sign out'),
-                )),
-      onTap: userId == null ? () => context.push('/auth') : null,
+          : TextButton(
+              onPressed: () => ref.read(authControllerProvider.notifier).signOut(),
+              child: const Text('Sign out'),
+            ),
     );
   }
 }

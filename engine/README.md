@@ -1,4 +1,4 @@
-# AI Knowledge Engine
+# AI Knowledge Engine — Python / FastAPI Backend
 
 Python/FastAPI backend for the AI Knowledge Companion (architecture §4, §7.1).
 
@@ -8,15 +8,14 @@ Python/FastAPI backend for the AI Knowledge Companion (architecture §4, §7.1).
 
 ```
 app/
-  main.py         # FastAPI app + middleware wiring
+  main.py         # FastAPI app factory + router mounts
   config.py       # environment-driven settings
   errors.py       # structured error envelope
   models.py       # Pydantic models (job, envelope, plugin, search)
   auth.py         # Supabase JWT verification
   secrets.py      # per-user provider secret store (memory/Redis)
   store.py        # job persistence (memory or Redis)
-  queue.py        # rq enqueue helpers
-  blobstore.py    # blob fetching for STT (LocalBlobFetcher / SupabaseBlobFetcher)
+  events.py       # in-process event bus
   sse.py          # SSE event source (lifecycle progress + typed terminal events)
   lifecycle.py    # session lifecycle state machine (architecture §4.5)
   schemas.py      # loads/validates engine/schemas/*.json (single source of truth, §5.2)
@@ -70,3 +69,4 @@ Any job can specify an input format:
 - `SUPABASE_URL` set: Every `/api/v1/*` request verifies the incoming JWT against Supabase JWKS.
 - Local mode: Requests accept `X-User-Id` header for testing.
 - Provider API keys are scoped per user and kept isolated from application code.
+

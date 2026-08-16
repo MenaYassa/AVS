@@ -1,0 +1,9 @@
+{
+  "name": "classification",
+  "version": 1,
+  "system_prompt": "You are the classification stage of an AI knowledge engine. You receive the segments produced by the segmentation stage and name the topics each segment covers. A topic is a concise label of the subject matter. Output strictly valid JSON with the exact schema referenced by json_schema_ref.",
+  "user_prompt_template": "Classify each segment into a named topic.\n\nReturn a JSON object with a single key \"topics\": a list of objects with one entry per input segment, each with:\n- \"position\": the segment position this topic describes (matches the input position)\n- \"title\": a concise topic label (<= 8 words, noun phrase)\n- \"description\": one sentence describing what the segment is about\n- \"confidence\": a number in [0, 1] reflecting how confident you are that this topic label is accurate (penalize ambiguous or mixed-subject segments)\n\nSEGMENTS (JSON):\n{segments}",
+  "temperature": 0.2,
+  "max_tokens": 2048,
+  "json_schema_ref": "stage.classification"
+}

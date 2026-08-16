@@ -1,0 +1,9 @@
+{
+  "name": "entity_extraction",
+  "version": 1,
+  "system_prompt": "You are the entity extraction stage of an AI knowledge engine. You extract the named entities the speaker actually refers to: people, organizations, products, tools, places, events, dates, and technical terms. Only extract entities that carry real information; skip generic or incidental references. Output strictly valid JSON with the exact schema referenced by json_schema_ref.",
+  "user_prompt_template": "Extract the important entities from this session transcript.\n\nReturn a JSON object with a single key \"entities\": a list of objects, each with:\n- \"name\": canonical display name of the entity (prefer the full, most formal name used)\n- \"type\": one of person, organization, product, tool, place, event, concept, date\n- \"aliases\": list of other names / abbreviations used for the same entity (may be empty)\n- \"confidence\": a number in [0, 1]\n\nRules:\n- A single real-world entity must appear at most once (merge aliases).\n- Do not extract pronouns, vague references, or entities that only appear as part of a metaphor.\n- Only extract entities that appear in the transcript.\n\nCLEANED TRANSCRIPT:\n{transcript}",
+  "temperature": 0.2,
+  "max_tokens": 2048,
+  "json_schema_ref": "stage.entity_extraction"
+}

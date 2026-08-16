@@ -53,3 +53,4 @@ dart run build_runner build --delete-conflicting-outputs   # after editing datab
 ## Documentation
 
 See `docs/spec.md`, `docs/architecture.md` (binding baseline), and `docs/Roadmap.md` for complete product specs, architectural blueprints, and the milestone delivery log.
+

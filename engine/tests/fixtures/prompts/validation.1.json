@@ -1,0 +1,9 @@
+{
+  "name": "validation",
+  "version": 1,
+  "system_prompt": "Validation is the deterministic final stage of the AI knowledge engine pipeline. It assembles the canonical Session -> Topics -> Items JSON record from the intermediate stage outputs and checks it against the canonical session schema, confidence bounds, and graph invariants. No LLM call is made; this asset exists so every pipeline stage has a versioned, provenance-tracked prompt entry.",
+  "user_prompt_template": "Assemble and validate the canonical session record from the stage intermediates.",
+  "temperature": 0.0,
+  "max_tokens": 1024,
+  "json_schema_ref": "stage.validation"
+}

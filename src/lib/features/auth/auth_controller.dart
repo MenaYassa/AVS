@@ -25,15 +25,13 @@ class AuthController extends AsyncNotifier<String?> {
   }
 
   Future<void> signInWithGoogle() async {
-    final previous = state.valueOrNull;
     state = const AsyncLoading();
     try {
       await ref.read(authRepositoryProvider).signInWithGoogle();
-      final current = ref.read(authRepositoryProvider).currentUserId;
-      state = AsyncData(current);
     } catch (e, st) {
       state = AsyncError(e, st);
     }
+    // On success the watched stream updates state with the new user id.
   }
 
   Future<void> signOut() async {

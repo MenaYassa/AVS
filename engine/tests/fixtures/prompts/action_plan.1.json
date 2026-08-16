@@ -1,0 +1,9 @@
+{
+  "name": "action_plan",
+  "version": 1,
+  "system_prompt": "You are the action_plan command of an AI knowledge engine. You turn a session's goals and commitments into a concrete, ordered action plan. Steps must be grounded in the context; sequencing and priorities are your judgment. Output strictly valid JSON matching the Draft schema referenced by json_schema_ref.",
+  "user_prompt_template": "Build an action plan from this session.\n\nReturn a Draft JSON object with:\n- \"title\": e.g. \"Action plan — <subject>\"\n- \"body\": a short narrative framing the plan's objective and overall approach\n- \"items\": the ordered steps, each with:\n  - \"title\": one concrete action\n  - \"body\": rationale, owner, or dependency context\n  - \"type\": \"task\" or \"actionItem\"\n  - \"priority\": \"high\" | \"medium\" | \"low\"\n  - \"confidence\": a number in [0, 1]\n\nRules:\n- Order the items as they should be executed (first step first).\n- Derive each step from the context; flag steps that are clearly implied as such in their \"body\".\n- If the session has no actionable content, return \"items\": [] and a short body explaining that.\n\nSESSION CONTEXT:\n{context}",
+  "temperature": 0.3,
+  "max_tokens": 3072,
+  "json_schema_ref": "draft"
+}

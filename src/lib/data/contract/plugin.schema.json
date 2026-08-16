@@ -1,0 +1,61 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://engine.ai-knowledge.local/schemas/plugin.schema.json",
+  "title": "Plugin structures",
+  "description": "Schemas for OAuth2 credentials, push requests, and receipts (architecture §4.11).",
+  "type": "object",
+  "definitions": {
+    "credentials": {
+      "type": "object",
+      "required": ["kind", "access_token"],
+      "properties": {
+        "kind": { "type": "string" },
+        "access_token": { "type": "string", "minLength": 1 },
+        "refresh_token": { "type": ["string", "null"] },
+        "token_type": { "type": "string", "default": "Bearer" },
+        "scope": { "type": ["string", "null"] },
+        "expires_at": { "type": ["string", "null"] }
+      }
+    },
+    "push_request": {
+      "type": "object",
+      "required": ["draft"],
+      "properties": {
+        "draft": {
+          "type": "object",
+          "required": ["title", "body"],
+          "properties": {
+            "title": { "type": "string", "minLength": 1 },
+            "body": { "type": "string" },
+            "items": {
+              "type": ["array", "null"],
+              "items": {
+                "type": "object",
+                "required": ["title"],
+                "properties": {
+                  "title": { "type": "string", "minLength": 1 },
+                  "body": { "type": "string" },
+                  "type": { "type": ["string", "null"] },
+                  "priority": { "type": ["string", "null"] },
+                  "confidence": { "type": ["number", "null"] }
+                }
+              }
+            }
+          }
+        },
+        "target": { "type": ["string", "null"], "description": "Target container/channel." }
+      }
+    },
+    "push_receipt": {
+      "type": "object",
+      "required": ["kind", "ok"],
+      "properties": {
+        "kind": { "type": "string" },
+        "ok": { "type": "boolean" },
+        "target_url": { "type": ["string", "null"] },
+        "external_id": { "type": ["string", "null"] },
+        "message": { "type": ["string", "null"] }
+      }
+    }
+  }
+}

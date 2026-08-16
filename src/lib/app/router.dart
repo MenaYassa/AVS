@@ -1,6 +1,5 @@
 import 'package:go_router/go_router.dart';
 
-import '../features/auth/auth_screen.dart';
 import '../features/graph/global_graph_screen.dart';
 import '../features/graph/graph_screen.dart';
 import '../features/home/home_screen.dart';
@@ -15,7 +14,6 @@ final appRouter = GoRouter(
   initialLocation: '/',
   routes: [
     GoRoute(path: '/', builder: (_, _) => const HomeScreen()),
-    GoRoute(path: '/auth', builder: (_, _) => const AuthScreen()),
     GoRoute(
       path: '/sessions/:id',
       builder: (_, state) =>

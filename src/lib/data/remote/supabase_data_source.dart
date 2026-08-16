@@ -18,18 +18,10 @@ import '../../domain/repositories.dart';
 /// its own ownership checks (architecture §5.4).
 
 class SupabaseAuthRepository implements AuthRepository {
-  SupabaseAuthRepository(this._client, {String? serverClientId})
-      : _google = GoogleSignIn(
-          serverClientId: (serverClientId != null && serverClientId.isNotEmpty)
-              ? serverClientId
-              : (const String.fromEnvironment('GOOGLE_SERVER_CLIENT_ID').isNotEmpty
-                  ? const String.fromEnvironment('GOOGLE_SERVER_CLIENT_ID')
-                  : null),
-          scopes: const ['email', 'profile', 'openid'],
-        );
+  SupabaseAuthRepository(this._client);
 
   final SupabaseClient _client;
-  final GoogleSignIn _google;
+  final GoogleSignIn _google = GoogleSignIn();
 
   @override
   String? get currentUserId => _client.auth.currentUser?.id;
@@ -43,16 +35,11 @@ class SupabaseAuthRepository implements AuthRepository {
   Future<void> signInWithGoogle() async {
     try {
       final googleUser = await _google.signIn();
-      if (googleUser == null) {
-        // User cleanly dismissed / cancelled the account chooser
-        return;
-      }
+      if (googleUser == null) return; // user cancelled
       final googleAuth = await googleUser.authentication;
       final idToken = googleAuth.idToken;
-      if (idToken == null || idToken.isEmpty) {
-        throw const AuthFailure(
-          'Google sign-in did not return an ID token. Please ensure GOOGLE_SERVER_CLIENT_ID is configured with your OAuth Web client ID.',
-        );
+      if (idToken == null) {
+        throw const AuthFailure('Google sign-in did not return an ID token.');
       }
       await _client.auth.signInWithIdToken(
         provider: OAuthProvider.google,
@@ -61,23 +48,14 @@ class SupabaseAuthRepository implements AuthRepository {
       );
     } on AuthFailure {
       rethrow;
-    } on AuthException catch (e, st) {
-      Log.e('Supabase auth failed', e, st);
-      throw AuthFailure(e.message, cause: e);
     } catch (e, st) {
       Log.e('Google sign-in failed', e, st);
-      final errorMsg = e.toString().replaceFirst(RegExp(r'^Exception:\s*'), '');
-      throw AuthFailure('Sign-in failed: $errorMsg', cause: e);
+      throw AuthFailure('Sign-in failed: ${e.toString()}', cause: e);
     }
   }
 
   @override
   Future<void> signOut() async {
-    try {
-      await _google.signOut();
-    } catch (e) {
-      Log.w('Google sign-out warning: $e');
-    }
     await _client.auth.signOut();
   }
 }

@@ -1,0 +1,9 @@
+{
+  "name": "segmentation",
+  "version": 1,
+  "system_prompt": "You are the segmentation stage of an AI knowledge engine. You receive a cleaned transcript and split it into coherent topical segments (sections of the conversation that each cover one distinct subject). Produce an ordered list of segments; every segment must be non-empty and the concatenation of the segments must cover the transcript. A segment should only switch to a new subject when the speaker actually moved on. Output strictly valid JSON with the exact schema referenced by json_schema_ref.",
+  "user_prompt_template": "Split the cleaned transcript below into topical segments.\n\nReturn a JSON object with a single key \"segments\": a list of objects, each with:\n- \"position\": integer index of the segment, starting at 0, strictly increasing\n- \"title\": a short (<= 12 word) descriptive title for the segment\n- \"text\": the verbatim segment text copied from the transcript (no rewriting)\n\nRules:\n- Cover the entire transcript with no gaps and no overlap.\n- Do not invent or summarize content; text must be verbatim.\n- Use fewer, larger segments rather than many tiny ones (aim for 1-6 segments for a typical session).\n\nCLEANED TRANSCRIPT:\n{transcript}",
+  "temperature": 0.2,
+  "max_tokens": 4096,
+  "json_schema_ref": "stage.segmentation"
+}

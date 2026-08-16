@@ -30,10 +30,6 @@ abstract final class AppConfig {
     'SUPABASE_ANON_KEY',
     defaultValue: '',
   );
-  static const googleServerClientId = String.fromEnvironment(
-    'GOOGLE_SERVER_CLIENT_ID',
-    defaultValue: '',
-  );
 }
 
 /// Wires infrastructure providers (architecture §3.2, §6). Overridable in tests.

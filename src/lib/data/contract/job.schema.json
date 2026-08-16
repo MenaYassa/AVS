@@ -1,0 +1,86 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://engine.ai-knowledge.local/schemas/job.schema.json",
+  "title": "Engine job",
+  "description": "Job record exchanged via the engine API (architecture §7.1). Mirrors the drift `jobs` table shape.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["id", "user_id", "kind", "status", "created_at", "updated_at"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "user_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "kind": {
+      "type": "string",
+      "enum": ["transcribe", "analyze", "rewrite", "chat", "command", "insights"]
+    },
+    "status": {
+      "type": "string",
+      "enum": ["queued", "running", "succeeded", "failed", "cancelled"]
+    },
+    "stage": {
+      "type": ["string", "null"]
+    },
+    "session_status": {
+      "type": ["string", "null"],
+      "description": "Session lifecycle projection of the job (architecture §4.5); null for non-analyze kinds.",
+      "enum": [
+        "recording", "uploading", "transcribing", "cleaning", "analyzing",
+        "validating", "ready", "edited", "synced", "failed", "cancelled"
+      ]
+    },
+    "stage_label": {
+      "type": ["string", "null"],
+      "description": "Human-readable label for the current stage (UI rendering)."
+    },
+    "input_ref": {
+      "type": ["string", "null"]
+    },
+    "options": {
+      "type": ["object", "null"],
+      "additionalProperties": true
+    },
+    "prompt_versions": {
+      "type": ["object", "null"],
+      "additionalProperties": { "type": "integer", "minimum": 1 }
+    },
+    "intermediates": {
+      "type": ["object", "null"],
+      "description": "Per-stage pipeline outputs persisted for resume-from-stage (architecture §4.2).",
+      "additionalProperties": true
+    },
+    "result": {
+      "type": ["object", "null"],
+      "additionalProperties": true
+    },
+    "error": {
+      "$ref": "#/definitions/error"
+    },
+    "created_at": { "$ref": "#/definitions/timestamp" },
+    "updated_at": { "$ref": "#/definitions/timestamp" }
+  },
+  "definitions": {
+    "error": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "required": ["code", "message"],
+      "properties": {
+        "code": { "type": "string" },
+        "message": { "type": "string" },
+        "details": {
+          "type": ["object", "null"],
+          "additionalProperties": true
+        }
+      }
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time"
+    }
+  }
+}

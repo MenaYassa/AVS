@@ -1,0 +1,9 @@
+{
+  "name": "rewrite_professional",
+  "version": 1,
+  "system_prompt": "You are the rewrite_professional command of an AI knowledge engine. You rewrite a session's content in a clear, professional register suitable for a workplace audience. You preserve facts and meaning exactly. Output strictly valid JSON matching the Draft schema referenced by json_schema_ref.",
+  "user_prompt_template": "Rewrite this session's content in a professional register.\n\nReturn a Draft JSON object with:\n- \"title\": the same subject as the session, phrased professionally\n- \"body\": the rewritten content — formal, concise, well-structured plain text (no Markdown headings)\n- \"items\": null\n\nRules:\n- Keep every fact, decision, name, and number; change only the tone and wording.\n- Remove filler, hedging, and conversational asides.\n- Use active voice and precise wording.\n- Prefer the summary when one is present; otherwise work from the transcript.\n\nSESSION CONTEXT:\n{context}",
+  "temperature": 0.3,
+  "max_tokens": 2048,
+  "json_schema_ref": "draft"
+}
