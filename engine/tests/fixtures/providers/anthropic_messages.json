@@ -1,0 +1,14 @@
+{
+  "id": "msg_01ABC123def456",
+  "type": "message",
+  "role": "assistant",
+  "model": "claude-3-5-sonnet-20241022",
+  "content": [
+    {
+      "type": "text",
+      "text": "Here is the summary you asked for."
+    }
+  ],
+  "stop_reason": "end_turn",
+  "usage": { "input_tokens": 55, "output_tokens": 20 }
+}

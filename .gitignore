@@ -1,0 +1,44 @@
+# --- Dart / Flutter ---
+.dart_tool/
+.packages
+build/
+pubspec.lock
+.flutter-plugins
+.flutter-plugins-dependencies
+*.iml
+.idea/
+.vscode/
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+dist/
+build/
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# --- Env / secrets ---
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# --- Android / Gradle ---
+.gradle/
+build/
+app/build/
+.build-outputs/
+*.apk
+*.aab
+local.properties
+
+# --- OS / editors ---
+.DS_Store
+*.swp
+Thumbs.db

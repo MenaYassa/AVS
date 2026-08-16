@@ -1,0 +1,45 @@
+[project]
+name = "ai-knowledge-engine"
+version = "0.1.0"
+description = "AI Knowledge Engine: orchestrated AI pipeline behind the AI Voice Knowledge Companion"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.115",
+    "uvicorn[standard]>=0.32",
+    "pydantic>=2.9",
+    "redis>=5.0",
+    "rq>=2.0",
+    "PyJWT>=2.9",
+    "httpx>=0.27",
+    "jsonschema>=4.23",
+    "sentence-transformers>=3.0",
+    "numpy>=1.24",
+    "asyncpg>=0.30",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0",
+    "pytest-asyncio>=0.24",
+    "ruff>=0.8",
+]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["app*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+addopts = "-q"
+
+[tool.ruff]
+line-length = 88
+target-version = "py312"
+src = ["app", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W"]

@@ -1,0 +1,175 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://engine.ai-knowledge.local/schemas/session.schema.json",
+  "title": "Canonical knowledge session",
+  "description": "Canonical Session -> Topics -> Items shape (architecture §5.1). Single source of truth for the app and engine; the Flutter app vendors a generated copy.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "session"],
+  "properties": {
+    "schema_version": {
+      "type": "integer",
+      "const": 1
+    },
+    "session": {
+      "$ref": "#/definitions/session"
+    }
+  },
+  "definitions": {
+    "session": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id"],
+      "properties": {
+        "id": { "$ref": "#/definitions/id" },
+        "title": { "type": ["string", "null"] },
+        "alternative_titles": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "summary": { "type": ["string", "null"] },
+        "summary_confidence": { "$ref": "#/definitions/confidence" },
+        "extraction_confidence": { "$ref": "#/definitions/confidence" },
+        "language": { "type": ["string", "null"] },
+        "status": { "$ref": "#/definitions/session_status" },
+        "created_at": { "type": ["string", "null"] },
+        "duration_sec": { "type": ["number", "null"], "minimum": 0 },
+        "word_count": { "type": ["integer", "null"], "minimum": 0 },
+        "favorite": { "type": "boolean" },
+        "archived": { "type": "boolean" },
+        "deleted": { "type": "boolean" },
+        "pinned": { "type": "boolean" },
+        "tags": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/tag" }
+        },
+        "prompt_versions": {
+          "type": "object",
+          "additionalProperties": { "type": "integer", "minimum": 1 }
+        },
+        "entities": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/entity" }
+        },
+        "relationships": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/relationship" }
+        },
+        "topics": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/topic" }
+        }
+      }
+    },
+    "topic": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "position", "title"],
+      "properties": {
+        "id": { "$ref": "#/definitions/id" },
+        "position": { "type": "integer", "minimum": 0 },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "confidence": { "$ref": "#/definitions/confidence" },
+        "items": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/item" }
+        }
+      }
+    },
+    "item": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "type", "position", "title"],
+      "properties": {
+        "id": { "$ref": "#/definitions/id" },
+        "type": { "$ref": "#/definitions/item_type" },
+        "position": { "type": "integer", "minimum": 0 },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "priority": { "$ref": "#/definitions/priority" },
+        "timestamp_sec": { "type": ["number", "null"], "minimum": 0 },
+        "confidence": { "$ref": "#/definitions/confidence" }
+      }
+    },
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "confidence": {
+      "type": ["number", "null"],
+      "minimum": 0,
+      "maximum": 1
+    },
+    "item_type": {
+      "type": "string",
+      "enum": [
+        "idea", "task", "decision", "question", "problem", "risk", "goal",
+        "event", "reminder", "reference", "observation", "opportunity",
+        "actionItem"
+      ]
+    },
+    "priority": {
+      "type": ["string", "null"],
+      "enum": ["low", "medium", "high"]
+    },
+    "tag": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "confidence": { "$ref": "#/definitions/confidence" }
+      }
+    },
+    "session_status": {
+      "type": ["string", "null"],
+      "enum": [
+        "recording", "uploading", "transcribing", "cleaning", "analyzing",
+        "validating", "ready", "edited", "synced", "failed", "cancelled"
+      ]
+    },
+    "entity_type": {
+      "type": "string",
+      "enum": [
+        "person", "project", "organization", "idea", "task", "decision",
+        "event", "product", "tool", "place", "concept", "date"
+      ]
+    },
+    "relationship_type": {
+      "type": "string",
+      "enum": [
+        "participates_in", "leads", "discusses", "depends_on",
+        "assigned_to", "related_to"
+      ]
+    },
+    "entity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "type", "name"],
+      "properties": {
+        "id": { "$ref": "#/definitions/id" },
+        "type": { "$ref": "#/definitions/entity_type" },
+        "name": { "type": "string", "minLength": 1 },
+        "aliases": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "confidence": { "$ref": "#/definitions/confidence" }
+      }
+    },
+    "relationship": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "source_id", "target_id", "type"],
+      "properties": {
+        "id": { "$ref": "#/definitions/id" },
+        "source_id": { "$ref": "#/definitions/id" },
+        "target_id": { "$ref": "#/definitions/id" },
+        "type": { "$ref": "#/definitions/relationship_type" },
+        "weight": { "type": ["number", "null"], "minimum": 0 },
+        "confidence": { "$ref": "#/definitions/confidence" }
+      }
+    }
+  }
+}

@@ -1,0 +1,41 @@
+# Android Fastlane lanes (architecture §8.3 — Play internal track release).
+#
+# Release signing is configured in android/app/build.gradle.kts from
+# environment variables (ANDROID_KEYSTORE_*); --dart-define runtime config
+# comes from the environment too, so no secrets live in the repo.
+
+require "shellwords"
+
+ENV_DEFINES = %w[ENGINE_BASE_URL SUPABASE_URL SUPABASE_ANON_KEY].freeze
+
+def dart_defines
+  ENV_DEFINES.map { |key| "--dart-define=#{key}=#{ENV[key]}".shellescape }
+end
+
+def require_defines!
+  missing = ENV_DEFINES.reject { |key| ENV[key].to_s.strip.empty? }
+  return if missing.empty?
+  abort "Missing required --dart-define env vars: #{missing.join(", ")}"
+end
+
+default_platform(:android)
+
+platform :android do
+  desc "Build an unsigned Android APK for CI staging"
+  lane :staging do
+    sh "flutter pub get"
+    sh "flutter build apk --debug #{dart_defines.join(" ")}"
+  end
+
+  desc "Build a signed release AAB and upload to the Play internal track"
+  lane :internal do
+    require_defines!
+    sh "flutter pub get"
+    sh "flutter build appbundle --release #{dart_defines.join(" ")}"
+    upload_to_play_store(
+      track: "internal",
+      aab: "../build/app/outputs/bundle/release/app-release.aab",
+      json_key: ENV["PLAY_JSON_KEY"]
+    )
+  end
+end

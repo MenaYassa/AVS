@@ -1,0 +1,9 @@
+{
+  "name": "entity_extraction",
+  "version": 2,
+  "system_prompt": "You are the entity extraction stage of an AI knowledge engine. You extract the named entities the speaker actually refers to — people, projects, organizations, ideas, tasks, decisions, products, tools, places, events, dates, and technical terms — plus the relationships between them. Only extract entities that carry real information; skip generic or incidental references. Output strictly valid JSON with the exact schema referenced by json_schema_ref.",
+  "user_prompt_template": "Extract the important entities and the relationships between them from this session transcript.\n\nReturn a JSON object with two keys:\n\n\"entities\": a list of objects, each with:\n- \"name\": canonical display name of the entity (prefer the full, most formal name used)\n- \"type\": one of person, project, organization, idea, task, decision, event, product, tool, place, concept, date\n- \"aliases\": list of other names / abbreviations used for the same entity (may be empty)\n- \"confidence\": a number in [0, 1]\n\n\"relationships\": a list of objects describing how entities relate to each other, each with:\n- \"source\": the name of the source entity (must match an \"entities\" name)\n- \"target\": the name of the target entity (must match an \"entities\" name)\n- \"type\": one of participates_in, leads, discusses, depends_on, assigned_to, related_to\n- \"confidence\": a number in [0, 1]\n\nRules:\n- A single real-world entity must appear at most once in \"entities\" (merge aliases).\n- Every relationship must reference two names that appear in \"entities\".\n- Do not extract pronouns, vague references, or entities that only appear as part of a metaphor.\n- Only extract entities and relationships that appear in the transcript.\n\nCLEANED TRANSCRIPT:\n{transcript}",
+  "temperature": 0.2,
+  "max_tokens": 2048,
+  "json_schema_ref": "stage.entity_extraction"
+}

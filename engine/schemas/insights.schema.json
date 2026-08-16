@@ -1,0 +1,89 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://engine.ai-knowledge.local/schemas/insights.schema.json",
+  "title": "Cross-session insights",
+  "description": "Deterministic cross-session intelligence statements with provenance (architecture §4.9). Each insight records its source sessions so every claim is explainable. Computed by the engine from compact session descriptors shipped by the client; embeddings/vector similarity land in Phase 6.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["insights"],
+  "properties": {
+    "insights": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/insight"
+      }
+    },
+    "generated_at": {
+      "type": ["string", "null"],
+      "format": "date-time"
+    },
+    "total_sessions": {
+      "type": "integer",
+      "minimum": 0
+    }
+  },
+  "definitions": {
+    "insight": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "kind",
+        "label",
+        "session_count",
+        "confidence",
+        "statement",
+        "sources"
+      ],
+      "properties": {
+        "kind": {
+          "enum": ["entity", "tag", "person", "project", "task", "decision"]
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "session_count": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "mention_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "statement": {
+          "type": "string",
+          "minLength": 1
+        },
+        "sources": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/source"
+          }
+        }
+      }
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["session_id", "title"],
+      "properties": {
+        "session_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "snippet": {
+          "type": ["string", "null"]
+        }
+      }
+    }
+  }
+}

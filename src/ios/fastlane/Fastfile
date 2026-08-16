@@ -1,0 +1,39 @@
+# iOS Fastlane lanes (architecture §8.3 — TestFlight release path).
+#
+# Runtime config is injected via --dart-define (AppConfig in bootstrap.dart);
+# values come from the environment so no secrets live in the repo.
+
+require "shellwords"
+
+ENV_DEFINES = %w[ENGINE_BASE_URL SUPABASE_URL SUPABASE_ANON_KEY].freeze
+
+def dart_defines
+  ENV_DEFINES.map { |key| "--dart-define=#{key}=#{ENV[key]}".shellescape }
+end
+
+def require_defines!
+  missing = ENV_DEFINES.reject { |key| ENV[key].to_s.strip.empty? }
+  return if missing.empty?
+  abort "Missing required --dart-define env vars: #{missing.join(", ")}"
+end
+
+default_platform(:ios)
+
+platform :ios do
+  desc "Build an unsigned iOS app for CI staging (no codesigning)"
+  lane :staging do
+    sh "flutter pub get"
+    sh "flutter build ios --debug --no-codesign #{dart_defines.join(" ")}"
+  end
+
+  desc "Build a signed release and upload to TestFlight (internal testers)"
+  lane :testflight do
+    require_defines!
+    sh "flutter pub get"
+    sh "flutter build ios --release #{dart_defines.join(" ")}"
+    upload_to_testflight(
+      skip_waiting_for_build_processing: true,
+      team_id: ENV["TEAM_ID"]
+    )
+  end
+end

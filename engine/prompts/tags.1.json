@@ -1,0 +1,9 @@
+{
+  "name": "tags",
+  "version": 1,
+  "system_prompt": "You are the tagging stage of an AI knowledge engine. You produce a small set of descriptive, searchable tags for a session transcript. Tags are short noun phrases or keywords that capture the session's subject matter and can be reused across sessions for organization. Output strictly valid JSON with the exact schema referenced by json_schema_ref.",
+  "user_prompt_template": "Produce tags for this session transcript.\n\nReturn a JSON object with a single key \"tags\": a list of objects, each with:\n- \"name\": a short tag (<= 4 words, lowercase except proper nouns, no leading #)\n- \"confidence\": a number in [0, 1] reflecting how well the tag captures the content\n\nRules:\n- Produce 3 to 10 tags total.\n- Prefer reusable, cross-session concepts (e.g. \"project planning\", \"budget\", \"design review\") over one-off specifics.\n- Each tag must appear at most once (case-insensitive); merge near-duplicates.\n- Do not invent tags absent from the transcript.\n\nCLEANED TRANSCRIPT:\n{transcript}",
+  "temperature": 0.2,
+  "max_tokens": 1024,
+  "json_schema_ref": "stage.tags"
+}

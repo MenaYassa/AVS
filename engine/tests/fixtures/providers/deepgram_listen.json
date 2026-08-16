@@ -1,0 +1,19 @@
+{
+  "metadata": {
+    "request_id": "req_deepgram_abc",
+    "duration": 3.42
+  },
+  "results": {
+    "channels": [
+      {
+        "alternatives": [
+          {
+            "transcript": "We need to finalize the budget by Friday.",
+            "confidence": 0.97,
+            "language": "en"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "name": "unclear",
+  "note": "Unintelligible region stays marked with [unclear] per the cleanup prompt.",
+  "raw": "we agreed to move the launch to uh [unclear] and then um Rachel will own the follow-up with the suppliers.",
+  "cleaned": "We agreed to move the launch to [unclear], and Rachel will own the follow-up with the suppliers."
+}

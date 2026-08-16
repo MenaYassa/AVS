@@ -1,0 +1,18 @@
+{
+  "id": "msg_01ABC123def457",
+  "type": "message",
+  "role": "assistant",
+  "model": "claude-3-5-sonnet-20241022",
+  "content": [
+    {
+      "type": "text",
+      "text": "Sure! Here is the JSON:\n\n{\"topics\": [{\"title\": \"Budget\", \"items\": [{\"text\": \"Cut costs\", \"confidence\": 0.9}]}], \"confidence\": 0.88}"
+    },
+    {
+      "type": "text",
+      "text": "\n\nLet me know if you need changes."
+    }
+  ],
+  "stop_reason": "end_turn",
+  "usage": { "input_tokens": 80, "output_tokens": 45 }
+}

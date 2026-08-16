@@ -1,0 +1,52 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://engine.ai-knowledge.local/schemas/draft.schema.json",
+  "title": "AI command draft",
+  "description": "Editable output of an AI command (architecture §4.11). Every command produces one Draft; the user edits it before it is saved into a session or exported. Draft items reuse the canonical session item shape so a draft can be mapped back onto topics/items on save.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["title", "body"],
+  "properties": {
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "body": {
+      "type": "string",
+      "description": "Free-form draft body (the rewritten summary, email text, minutes narrative, report, blog post, ...)."
+    },
+    "items": {
+      "type": ["array", "null"],
+      "items": { "$ref": "#/definitions/item" }
+    }
+  },
+  "definitions": {
+    "item": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["title"],
+      "properties": {
+        "title": { "type": "string", "minLength": 1 },
+        "body": { "type": "string" },
+        "type": {
+          "type": ["string", "null"],
+          "description": "Canonical session item type, when the item maps onto session content (e.g. extract_tasks).",
+          "enum": [
+            "idea", "task", "decision", "question", "problem", "risk", "goal",
+            "event", "reminder", "reference", "observation", "opportunity",
+            "actionItem"
+          ]
+        },
+        "priority": {
+          "type": ["string", "null"],
+          "enum": ["low", "medium", "high"]
+        },
+        "confidence": {
+          "type": ["number", "null"],
+          "minimum": 0,
+          "maximum": 1
+        }
+      }
+    }
+  }
+}

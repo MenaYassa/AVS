@@ -1,0 +1,7 @@
+{
+  "id": "abcd1234-efgh-5678-ijkl-9012mnopqrst",
+  "status": "queued",
+  "audio_url": "https://s3.us-east-1.amazonaws.com/assembly-uploads/t-upload-1",
+  "language_code": "en",
+  "speech_model": "best"
+}

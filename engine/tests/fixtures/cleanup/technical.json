@@ -1,0 +1,6 @@
+{
+  "name": "technical",
+  "note": "Negation-heavy: 'did not ship' and 'is not needed' must survive cleanup.",
+  "raw": "uh so the merge request uh MR 1421 is still open and we did not ship the release because the staging pipeline failed on the Benchmark Platform deploy. so um rollback is not needed yet.",
+  "cleaned": "The merge request MR 1421 is still open, and we did not ship the release because the staging pipeline failed on the Benchmark Platform deploy. Rollback is not needed yet."
+}

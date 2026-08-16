@@ -1,0 +1,6 @@
+{
+  "access_token": "n-access",
+  "refresh_token": "n-refresh",
+  "token_type": "Bearer",
+  "bot_id": "bot-1"
+}

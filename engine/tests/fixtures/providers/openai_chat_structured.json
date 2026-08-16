@@ -1,0 +1,17 @@
+{
+  "id": "chatcmpl-9FmXk0vU0aaWm9Q4c0kXfC7z1aB2dF",
+  "object": "chat.completion",
+  "created": 1720000001,
+  "model": "gpt-4o-mini",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "```json\n{\"title\": \"Meeting notes\", \"confidence\": 0.97}\n```"
+      },
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": { "prompt_tokens": 60, "completion_tokens": 18, "total_tokens": 78 }
+}

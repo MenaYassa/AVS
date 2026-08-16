@@ -1,0 +1,19 @@
+{
+  "candidates": [
+    {
+      "content": {
+        "role": "model",
+        "parts": [
+          { "text": "{\"entities\": [{\"name\": \"Acme\", \"type\": \"company\"}], \"confidence\": 0.82}" }
+        ]
+      },
+      "finishReason": "STOP",
+      "index": 0
+    }
+  ],
+  "usageMetadata": {
+    "promptTokenCount": 70,
+    "candidatesTokenCount": 15,
+    "totalTokenCount": 85
+  }
+}

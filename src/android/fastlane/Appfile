@@ -1,0 +1,2 @@
+package_name "com.aiknowledge.ai_knowledge_companion"
+json_key_file ENV["PLAY_JSON_KEY"]

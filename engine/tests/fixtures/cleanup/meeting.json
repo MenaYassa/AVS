@@ -1,0 +1,6 @@
+{
+  "name": "meeting",
+  "note": "Recorded golden: filler stripped, facts/numbers/names preserved (§2.5).",
+  "raw": "um okay so we uh need to finalize the Q3 budget by Friday um and the deadline for the Acme contract is the 15th of August you know. we should um assign the review to Dana uh before the end of this week.",
+  "cleaned": "We need to finalize the Q3 budget by Friday, and the deadline for the Acme contract is the 15th of August. We should assign the review to Dana before the end of this week."
+}

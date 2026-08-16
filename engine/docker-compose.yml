@@ -1,0 +1,42 @@
+# Local / self-hosted topology (architecture §9.2).
+name: ai-knowledge
+
+services:
+  engine-web:
+    image: ai-knowledge-engine
+    build: .
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8080 --workers 2
+    environment:
+      ENGINE_JOB_STORE: redis
+      REDIS_URL: redis://redis:6379/0
+      SUPABASE_URL: ${SUPABASE_URL:-}
+    ports:
+      - "8080:8080"
+    depends_on:
+      redis:
+        condition: service_healthy
+
+  engine-worker:
+    image: ai-knowledge-engine
+    build: .
+    command: python -m app.workers.worker
+    # The image HEALTHCHECK probes /healthz, which only the web role serves.
+    healthcheck:
+      disable: true
+    environment:
+      ENGINE_JOB_STORE: redis
+      REDIS_URL: redis://redis:6379/0
+      SUPABASE_URL: ${SUPABASE_URL:-}
+    depends_on:
+      redis:
+        condition: service_healthy
+    deploy:
+      replicas: 2
+
+  redis:
+    image: redis:7-alpine
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5

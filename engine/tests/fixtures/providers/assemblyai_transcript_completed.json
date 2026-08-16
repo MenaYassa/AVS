@@ -1,0 +1,8 @@
+{
+  "id": "abcd1234-efgh-5678-ijkl-9012mnopqrst",
+  "status": "completed",
+  "audio_url": "https://s3.us-east-1.amazonaws.com/assembly-uploads/t-upload-1",
+  "language_code": "en",
+  "text": "The quarterly review is scheduled for next Monday.",
+  "confidence": 0.95
+}

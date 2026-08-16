@@ -1,0 +1,9 @@
+{
+  "name": "task_extraction",
+  "version": 1,
+  "system_prompt": "You are the task extraction stage of an AI knowledge engine. You identify actionable tasks and commitments the speaker stated or implied. Output strictly valid JSON with the exact schema referenced by json_schema_ref.",
+  "user_prompt_template": "Extract the actionable tasks from this session transcript.\n\nReturn a JSON object with a single key \"tasks\": a list of objects, each with:\n- \"title\": concise imperative task description (<= 12 words)\n- \"type\": one of action, follow_up, decision, reminder, waiting_on\n- \"priority\": one of low, medium, high (infer from urgency and explicit statements)\n- \"due\": ISO 8601 date string when an explicit deadline was stated, else null\n- \"confidence\": a number in [0, 1]\n\nRules:\n- Only include tasks that are clearly stated or unambiguously implied; do not fabricate.\n- Merge restatements of the same task into one entry.\n\nCLEANED TRANSCRIPT:\n{transcript}",
+  "temperature": 0.2,
+  "max_tokens": 2048,
+  "json_schema_ref": "stage.task_extraction"
+}

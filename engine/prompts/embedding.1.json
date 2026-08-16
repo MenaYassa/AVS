@@ -1,0 +1,9 @@
+{
+  "name": "embedding",
+  "version": 1,
+  "system_prompt": "You are a deterministic embedding generator.",
+  "user_prompt_template": "Embedding generated from transcript: {transcript}",
+  "temperature": 0.0,
+  "max_tokens": 1,
+  "json_schema_ref": "stage.embedding"
+}
