@@ -2,21 +2,16 @@
 
 Python/FastAPI backend for the AI Knowledge Companion (architecture §4, §7.1).
 
-**Status:** 8-stage AI pipeline live (cleanup → segmentation → classification →
-entity_extraction → task_extraction → knowledge_extraction → tags → validation),
-versioned prompt assets + immutable `PromptRegistry`, real STT/LLM provider
-adapters with user-scoped keys, session lifecycle state machine, SSE progress,
-universal input pipeline (voice + transcript), and the canonical JSON Schema
-contract. **156 pytest green, ruff clean** (all tests hermetic; no Redis/network).
+**Status:** 9-stage AI pipeline live (cleanup → segmentation → classification → entity_extraction → task_extraction → knowledge_extraction → tags → validation → embedding), versioned prompt assets + immutable `PromptRegistry`, real STT/LLM provider adapters with user-scoped keys, session lifecycle state machine, SSE progress, universal input pipeline (voice, transcript, note, image, pdf, email, document, screenshot), plugin system (Notion, Slack), and canonical JSON Schema contract. **317 pytest green, ruff clean** (all tests hermetic; in-memory job store & mocks by default).
 
-## Layout
+## Architecture & Layout
 
 ```
 app/
   main.py         # FastAPI app + middleware wiring
   config.py       # environment-driven settings
   errors.py       # structured error envelope
-  models.py       # Pydantic models (job, envelope)
+  models.py       # Pydantic models (job, envelope, plugin, search)
   auth.py         # Supabase JWT verification
   secrets.py      # per-user provider secret store (memory/Redis)
   store.py        # job persistence (memory or Redis)
@@ -25,58 +20,53 @@ app/
   sse.py          # SSE event source (lifecycle progress + typed terminal events)
   lifecycle.py    # session lifecycle state machine (architecture §4.5)
   schemas.py      # loads/validates engine/schemas/*.json (single source of truth, §5.2)
-  inputs/         # universal input pipeline: base, registry, voice, transcript
+  inputs/         # universal input pipeline: base, registry, voice, transcript, note, image, pdf, email, document, screenshot
   prompts/        # versioned prompt assets (<stage>.<version>.json, §4.3)
-  providers/      # LLM (OpenAI-compatible/Anthropic/Gemini) + STT (Whisper/Deepgram/AssemblyAI) adapters
-  routers/        # health + jobs + providers endpoints
-  stages/         # 8 single-responsibility pipeline stages + assembly + registry
+  providers/      # LLM (OpenAI-compatible/Anthropic/Gemini) + STT (Whisper/Deepgram/AssemblyAI) + OCR + DocumentParser adapters
+  plugins/        # OAuth2 token storage & outbound push adapters (NotionPlugin, SlackPlugin)
+  vector/         # pgvector & NullVectorStore adapters for semantic embeddings
+  routers/        # health + jobs + providers + plugins + insights + search endpoints
+  stages/         # 9 single-responsibility pipeline stages + assembly + registry + embedding stage
   workers/        # orchestrator (resume-from-stage, idempotent) + worker entrypoint
-tests/            # pytest suite (hermetic; in-memory job store by default)
+tests/            # pytest suite (hermetic; in-memory job store & test harnesses)
 ```
 
-## Run
+## Running & Developing
 
 ```sh
-uv sync                       # install deps (or: pip install -e '.[dev]' equivalent)
+uv sync                       # install dependencies
 uv run uvicorn app.main:app --reload --port 8080
-uv run ruff check .           # lint
-uv run pytest                 # hermetic tests (in-memory job store)
+uv run ruff check .           # linting
+uv run pytest                 # hermetic test suite (317 tests)
 ```
 
-With a queue (compose): set `ENGINE_JOB_STORE=redis` and `REDIS_URL`.
-Workers: `uv run python -m app.workers.worker`.
+With Redis queue enabled: set `ENGINE_JOB_STORE=redis` and `REDIS_URL`.
+Start background worker: `uv run python -m app.workers.worker`.
 
-## Pipeline & prompts
+## Pipeline & Prompts
 
-- 8 stages run in order: `cleanup → segmentation → classification →
-  entity_extraction → task_extraction → knowledge_extraction → tags →
-  validation` (architecture §4.2). The final stage assembles the canonical
-  Session→Topics→Items JSON and validates it against `schemas.py`
-  (`VALIDATION_FAILED` on breach).
-- Stages resume from the last completed stage (`job.intermediates`), retry
-  malformed LLM output once, and enforce token budgets.
-- Every stage's instructions live in `prompts/<stage>.<version>.json`
-  (architecture §4.3); versions are recorded in the canonical session's
-  `prompt_versions`. Shipped prompts are pinned byte-for-byte in
-  `tests/fixtures/prompts/` — in-place edits fail the contract tests.
+- **9 Orchestrated Stages**: `cleanup → segmentation → classification → entity_extraction → task_extraction → knowledge_extraction → tags → validation → embedding` (architecture §4.2).
+- **Validation**: The validation stage verifies output against canonical JSON schemas (`schemas.py`), raising `VALIDATION_FAILED` on contract breach.
+- **Resumability**: Stages resume from the last completed stage (`job.intermediates`), retry malformed LLM outputs, and enforce strict token budgets.
+- **Prompt Versioning**: Stage prompts are pinned in `prompts/<stage>.<version>.json`; prompt versions are stamped in the session output (`prompt_versions`). Contract tests in `tests/` guarantee prompt immutability.
 
-## Universal input pipeline
+## Universal Input Pipeline
 
-Any job may carry an input kind (architecture §1.1, §4.12):
+Any job can specify an input format:
+- `voice`: Blob reference → STT transcription → 9-stage analysis pipeline.
+- `transcript`: Direct text in `options.input_meta.text`.
+- `note`: Text notes directly routed to processing without audio artifacts.
+- `image` / `screenshot`: OCR text extraction via `OcrProvider` seam.
+- `pdf` / `email` / `document`: Parsed via `StdlibDocumentParser` supporting `.eml`, `.txt`, `.md`, `.rtf`, `.docx`, `.odt`, `.csv`, `.json`, `.xml`.
 
-- `voice` — requires an `input_ref` (blob) → STT → pipeline.
-- `transcript` — no `input_ref`; text travels in `options.input_meta.text`.
+## Plugins & Outbound Integrations
 
-## Auth
+- **Server-Side Token Vault**: Secure OAuth2 access token store.
+- **Notion Target**: Formats structured sessions into multi-block Notion pages with toggle lists, tasks, and entity callouts.
+- **Slack Target**: Posts markdown digests and actionable task lists to designated channels.
 
-- `SUPABASE_URL` set → every `/api/v1/*` request must carry
-  `Authorization: Bearer <jwt>`; the engine verifies the Supabase access token
-  (JWKS) and derives `user_id` from `sub`.
-- `SUPABASE_URL` unset (local dev) → requests may use `X-User-Id` to identify a
-  user; jobs are still ownership-scoped.
-- Provider API keys are user-scoped via `secrets.py`; the app never stores keys.
+## Auth & Security
 
-## Envelope
-
-All responses use `{ "status": "ok", "data": ... }` or
-`{ "status": "error", "error": { "code", "message", "details" } }` (§7.1).
+- `SUPABASE_URL` set: Every `/api/v1/*` request verifies the incoming JWT against Supabase JWKS.
+- Local mode: Requests accept `X-User-Id` header for testing.
+- Provider API keys are scoped per user and kept isolated from application code.
