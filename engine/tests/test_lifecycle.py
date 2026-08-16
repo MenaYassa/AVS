@@ -148,8 +148,14 @@ class TestTransitions:
         assert not can_transition("failed", "ready")
 
     def test_failure_anywhere(self) -> None:
-        for state in ("recording", "uploading", "transcribing", "cleaning",
-                      "analyzing", "validating"):
+        for state in (
+            "recording",
+            "uploading",
+            "transcribing",
+            "cleaning",
+            "analyzing",
+            "validating",
+        ):
             assert can_transition(state, "failed")
             assert can_transition(state, "cancelled")
 
@@ -174,9 +180,18 @@ class TestTransitions:
     def test_enum_values_match_schema(self) -> None:
         assert SessionLifecycle.ready.value == "ready"
         assert set(SessionLifecycle) == {
-            SessionLifecycle(s) for s in (
-                "recording", "uploading", "transcribing", "cleaning",
-                "analyzing", "validating", "ready", "edited", "synced",
-                "failed", "cancelled",
+            SessionLifecycle(s)
+            for s in (
+                "recording",
+                "uploading",
+                "transcribing",
+                "cleaning",
+                "analyzing",
+                "validating",
+                "ready",
+                "edited",
+                "synced",
+                "failed",
+                "cancelled",
             )
         }
