@@ -2,7 +2,7 @@
 
 This document is the technical design for the product specified in `spec.md`. It is a companion to (not a replacement for) the spec. Where this document conflicts with the spec, the spec wins; where the spec is silent, this document decides.
 
-Status: **design only — nothing implemented yet.** Established to support the six-phase roadmap in spec §28.
+Status: **Binding technical architecture baseline.** Fully implemented across Phases 1–6 (Android Jetpack Compose client, Flutter Drift v10 client, Python FastAPI 9-stage engine, and Supabase migrations).
 
 ---
 
