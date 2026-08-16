@@ -31,9 +31,7 @@ class StageOutputError(ValueError):
     """Structured stage output failed validation; retryable once."""
 
 
-def _validation_failure(
-    stage: str, attempts: int, error: Exception
-) -> JobFailedError:
+def _validation_failure(stage: str, attempts: int, error: Exception) -> JobFailedError:
     return JobFailedError(
         f"Stage {stage} produced invalid output after {attempts} attempt(s)",
         code="STAGE_OUTPUT_INVALID",
