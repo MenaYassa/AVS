@@ -24,11 +24,12 @@ abstract final class AppConfig {
   );
   static const supabaseUrl = String.fromEnvironment(
     'SUPABASE_URL',
-    defaultValue: '',
+    defaultValue: 'https://kong.03092017.xyz/',
   );
   static const supabaseAnonKey = String.fromEnvironment(
     'SUPABASE_ANON_KEY',
-    defaultValue: '',
+    defaultValue:
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.ewogICJyb2xlIjogImFub24iLAogICJpc3MiOiAic3VwYWJhc2UiLAogICJpYXQiOiAxNzQxMDM5MjAwLAogICJleHAiOiAxODk4ODA1NjAwCn0.w-F512sUPOy0uXnJ9BHu1rn-9ZNw7xP3MhS7d8Agjdw',
   );
 }
 
