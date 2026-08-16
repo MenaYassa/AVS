@@ -107,7 +107,7 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
                     border: Border.all(color: borderColor, width: 1.5),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.4),
+                        color: Colors.black.withAlpha(102),
                         blurRadius: 16,
                         offset: const Offset(0, 4),
                       ),
@@ -151,9 +151,9 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
                     width: double.infinity,
                     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                     decoration: BoxDecoration(
-                      color: Colors.red.shade900.withOpacity(0.3),
+                      color: Colors.red.shade900.withAlpha(77),
                       borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: Colors.red.shade700.withOpacity(0.5)),
+                      border: Border.all(color: Colors.red.shade700.withAlpha(128)),
                     ),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -197,9 +197,9 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
                       ),
                     );
                   },
-                  backgroundColor: cardBg.withOpacity(0.7),
+                  backgroundColor: cardBg.withAlpha(178),
                   textColor: Colors.white70,
-                  borderColor: borderColor.withOpacity(0.6),
+                  borderColor: borderColor.withAlpha(153),
                 ),
 
                 const SizedBox(height: 14),
@@ -215,9 +215,9 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
                       ),
                     );
                   },
-                  backgroundColor: cardBg.withOpacity(0.7),
+                  backgroundColor: cardBg.withAlpha(178),
                   textColor: Colors.white70,
-                  borderColor: borderColor.withOpacity(0.6),
+                  borderColor: borderColor.withAlpha(153),
                 ),
 
                 const SizedBox(height: 36),
@@ -270,7 +270,9 @@ class _AuthButton extends StatelessWidget {
         style: OutlinedButton.styleFrom(
           backgroundColor: backgroundColor,
           side: BorderSide(color: borderColor, width: 1),
-          shape: RoundedCornerShape(14),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(14),
+          ),
           padding: const EdgeInsets.symmetric(horizontal: 16),
         ),
         child: isLoading
