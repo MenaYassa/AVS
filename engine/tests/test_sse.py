@@ -145,4 +145,3 @@ async def test_job_events_emitted_per_stage_change() -> None:
     job_events = [data for name, data in events if name == "job"]
     stages = [j.get("stage") for j in job_events]
     assert stages == [None, STAGE_CLEANUP, None]
-

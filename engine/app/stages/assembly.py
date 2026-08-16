@@ -213,9 +213,7 @@ def assemble_canonical_session(ctx: StageContext) -> dict[str, Any]:
         )
 
     meta = ctx.input_doc.meta
-    all_items = [
-        item for topic in topics for item in topic["items"]
-    ]
+    all_items = [item for topic in topics for item in topic["items"]]
     session_id = _session_id(meta.get("job_id"))
     entities, relationships = _build_entities(
         extraction.get("entities", []),

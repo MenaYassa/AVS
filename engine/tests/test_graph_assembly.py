@@ -25,13 +25,16 @@ def _ctx(job_id: str = "job-1") -> StageContext:
             text="raw",
             meta={"job_id": job_id, "language": "en"},
         ),
-        prompt_versions={s: 1 for s in (
-            STAGE_CLEANUP,
-            STAGE_CLASSIFICATION,
-            STAGE_ENTITY_EXTRACTION,
-            STAGE_KNOWLEDGE_EXTRACTION,
-            STAGE_TAGS,
-        )},
+        prompt_versions={
+            s: 1
+            for s in (
+                STAGE_CLEANUP,
+                STAGE_CLASSIFICATION,
+                STAGE_ENTITY_EXTRACTION,
+                STAGE_KNOWLEDGE_EXTRACTION,
+                STAGE_TAGS,
+            )
+        },
         budget=TOKENS,
     )
     ctx.intermediates[STAGE_CLEANUP] = {
@@ -84,8 +87,12 @@ def test_entities_get_deterministic_ids_and_round_trip() -> None:
     _with_extraction(
         ctx,
         entities=[
-            {"name": "Benchmark Platform", "type": "project",
-             "aliases": ["Benchmark"], "confidence": 0.95},
+            {
+                "name": "Benchmark Platform",
+                "type": "project",
+                "aliases": ["Benchmark"],
+                "confidence": 0.95,
+            },
         ],
         relationships=[],
     )
@@ -103,8 +110,12 @@ def test_entities_get_deterministic_ids_and_round_trip() -> None:
     _with_extraction(
         again,
         entities=[
-            {"name": "Benchmark Platform", "type": "project",
-             "aliases": [], "confidence": 0.9},
+            {
+                "name": "Benchmark Platform",
+                "type": "project",
+                "aliases": [],
+                "confidence": 0.9,
+            },
         ],
         relationships=[],
     )
@@ -119,10 +130,13 @@ def test_alias_duplicates_merge_into_one_node() -> None:
     _with_extraction(
         ctx,
         entities=[
-            {"name": "Benchmark Platform", "type": "project",
-             "aliases": ["Benchmark"], "confidence": 0.95},
-            {"name": "Benchmark", "type": "project",
-             "aliases": [], "confidence": 0.8},
+            {
+                "name": "Benchmark Platform",
+                "type": "project",
+                "aliases": ["Benchmark"],
+                "confidence": 0.95,
+            },
+            {"name": "Benchmark", "type": "project", "aliases": [], "confidence": 0.8},
         ],
         relationships=[],
     )
@@ -137,16 +151,32 @@ def test_relationships_never_dangle() -> None:
     _with_extraction(
         ctx,
         entities=[
-            {"name": "Benchmark Platform", "type": "project",
-             "aliases": [], "confidence": 0.9},
+            {
+                "name": "Benchmark Platform",
+                "type": "project",
+                "aliases": [],
+                "confidence": 0.9,
+            },
         ],
         relationships=[
-            {"source": "Benchmark Platform", "target": "Acme",
-             "type": "related_to", "confidence": 0.6},
-            {"source": "Ghost", "target": "Benchmark Platform",
-             "type": "related_to", "confidence": 0.6},
-            {"source": "Benchmark Platform", "target": "Benchmark Platform",
-             "type": "related_to", "confidence": 0.6},
+            {
+                "source": "Benchmark Platform",
+                "target": "Acme",
+                "type": "related_to",
+                "confidence": 0.6,
+            },
+            {
+                "source": "Ghost",
+                "target": "Benchmark Platform",
+                "type": "related_to",
+                "confidence": 0.6,
+            },
+            {
+                "source": "Benchmark Platform",
+                "target": "Benchmark Platform",
+                "type": "related_to",
+                "confidence": 0.6,
+            },
         ],
     )
     session = assemble_canonical_session(ctx)
@@ -160,16 +190,27 @@ def test_relationships_dedupe_and_get_per_session_ids() -> None:
         _with_extraction(
             ctx,
             entities=[
-                {"name": "Benchmark Platform", "type": "project",
-                 "aliases": [], "confidence": 0.9},
-                {"name": "Friday", "type": "date",
-                 "aliases": [], "confidence": 0.9},
+                {
+                    "name": "Benchmark Platform",
+                    "type": "project",
+                    "aliases": [],
+                    "confidence": 0.9,
+                },
+                {"name": "Friday", "type": "date", "aliases": [], "confidence": 0.9},
             ],
             relationships=[
-                {"source": "Friday", "target": "Benchmark Platform",
-                 "type": "related_to", "confidence": 0.7},
-                {"source": "Friday", "target": "Benchmark Platform",
-                 "type": "related_to", "confidence": 0.8},
+                {
+                    "source": "Friday",
+                    "target": "Benchmark Platform",
+                    "type": "related_to",
+                    "confidence": 0.7,
+                },
+                {
+                    "source": "Friday",
+                    "target": "Benchmark Platform",
+                    "type": "related_to",
+                    "confidence": 0.8,
+                },
             ],
         )
         return assemble_canonical_session(ctx)

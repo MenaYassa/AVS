@@ -73,9 +73,7 @@ def test_normalize_memory_bounds_entries_tasks_and_text() -> None:
     assert all(len(i["summary"]) <= 400 for i in items)
     assert all(len(i["open_tasks"]) <= 6 for i in items)
     # non-string tasks are skipped, strings are truncated
-    normalized = normalize_memory(
-        [{"session_id": "s", "open_tasks": [42, "a" * 500]}]
-    )
+    normalized = normalize_memory([{"session_id": "s", "open_tasks": [42, "a" * 500]}])
     assert normalized[0]["open_tasks"] == ["a" * 200]
 
 

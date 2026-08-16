@@ -170,8 +170,7 @@ def _build_insights(
     for session in sessions:
         session_id = session["session_id"]
         title = (
-            str(session.get("title") or "").strip()
-            or f"Untitled session {session_id}"
+            str(session.get("title") or "").strip() or f"Untitled session {session_id}"
         )
 
         # 1. Entities (with type support for person/project)
@@ -181,9 +180,7 @@ def _build_insights(
                 continue
             kind = _determine_kind("entity", raw)
             key = _label_key(kind, label)
-            cluster = clusters.setdefault(
-                key, {"label": label, "sessions": {}}
-            )
+            cluster = clusters.setdefault(key, {"label": label, "sessions": {}})
             cluster["sessions"][session_id] = {
                 "session_id": session_id,
                 "title": title,
@@ -196,9 +193,7 @@ def _build_insights(
             if label is None:
                 continue
             key = _label_key("tag", label)
-            cluster = clusters.setdefault(
-                key, {"label": label, "sessions": {}}
-            )
+            cluster = clusters.setdefault(key, {"label": label, "sessions": {}})
             cluster["sessions"][session_id] = {
                 "session_id": session_id,
                 "title": title,
@@ -214,9 +209,7 @@ def _build_insights(
                     if label is None:
                         continue
                     key = _label_key(item_type, label)
-                    cluster = clusters.setdefault(
-                        key, {"label": label, "sessions": {}}
-                    )
+                    cluster = clusters.setdefault(key, {"label": label, "sessions": {}})
                     cluster["sessions"][session_id] = {
                         "session_id": session_id,
                         "title": title,

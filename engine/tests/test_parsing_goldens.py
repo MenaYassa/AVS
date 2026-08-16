@@ -39,18 +39,14 @@ async def test_docx_golden_extracts_paragraphs() -> None:
     result = await _parse("meeting.docx", _DOCX_MIME)
     assert result.title is None
     assert result.text == (
-        "Quarterly review call\n"
-        "Budget approved for Q3.\n"
-        "Action: finalize roadmap."
+        "Quarterly review call\nBudget approved for Q3.\nAction: finalize roadmap."
     )
 
 
 async def test_odt_golden_extracts_paragraphs() -> None:
     result = await _parse("notes.odt", _ODT_MIME)
     assert result.text == (
-        "Standup notes\n"
-        "Frontend tests are green.\n"
-        "Engine parity contract holds."
+        "Standup notes\nFrontend tests are green.\nEngine parity contract holds."
     )
 
 

@@ -232,9 +232,7 @@ async def test_transcript_source_ingest_builds_canonical_doc() -> None:
 
 
 async def test_transcript_source_trims_but_keeps_content() -> None:
-    doc = await TranscriptInputSource().ingest(
-        None, meta={"text": "  edited text  "}
-    )
+    doc = await TranscriptInputSource().ingest(None, meta={"text": "  edited text  "})
     assert doc.text == "edited text"
     assert doc.meta["source_ref"] is None
 
@@ -322,9 +320,7 @@ async def test_image_source_ingest_builds_canonical_doc() -> None:
 
 async def test_image_source_passes_mime_to_ocr() -> None:
     provider = _FakeOcrProvider()
-    await ImageInputSource(provider).ingest(
-        "a.png", {"mime_type": "image/png"}
-    )
+    await ImageInputSource(provider).ingest("a.png", {"mime_type": "image/png"})
     assert provider.requested_mime_types == ["image/png"]
 
 
@@ -397,9 +393,7 @@ async def test_screenshot_source_rides_image_ocr_path_with_provenance() -> None:
 
 async def test_screenshot_source_passes_mime_to_ocr() -> None:
     provider = _FakeOcrProvider()
-    await ScreenshotInputSource(provider).ingest(
-        "a.png", {"mime_type": "image/png"}
-    )
+    await ScreenshotInputSource(provider).ingest("a.png", {"mime_type": "image/png"})
     assert provider.requested_mime_types == ["image/png"]
 
 
@@ -501,8 +495,7 @@ async def test_document_source_ingest_builds_canonical_doc() -> None:
         "source_ref": "bucket/session-a/budget.docx",
         "language": None,
         "mime_type": (
-            "application/vnd.openxmlformats-officedocument"
-            ".wordprocessingml.document"
+            "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
         ),
         "title": "Budget",
         "parser_confidence": None,

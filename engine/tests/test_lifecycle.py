@@ -78,10 +78,7 @@ class TestDeriveSessionStatus:
     def test_non_analyze_kinds_have_no_session(self) -> None:
         for kind in (JobKind.transcribe, JobKind.rewrite, JobKind.chat):
             assert (
-                derive_session_status(
-                    _job(status=JobStatus.running, kind=kind)
-                )
-                is None
+                derive_session_status(_job(status=JobStatus.running, kind=kind)) is None
             )
 
     def test_unknown_stage_is_analyzing(self) -> None:

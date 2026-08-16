@@ -27,16 +27,38 @@ FIXTURES = Path(__file__).resolve().parent / "fixtures" / "cleanup"
 ASSETS = get_prompt_registry()
 
 NEGATIONS = {
-    "not", "never", "no", "won't", "can't", "don't", "doesn't",
-    "isn't", "aren't", "didn't", "haven't", "hasn't",
+    "not",
+    "never",
+    "no",
+    "won't",
+    "can't",
+    "don't",
+    "doesn't",
+    "isn't",
+    "aren't",
+    "didn't",
+    "haven't",
+    "hasn't",
 }
 FILLER_WORDS = {"um", "uh", "hmm", "kinda", "sorta", "basically", "okay"}
 FILLER_PHRASES = ("you know", "i mean", "like i said")
 # Sentence-start words that are capitalized in the raw transcript but carry no
 # entity meaning; excluded from the name-preservation check.
 _CAPITALIZED_STOP = {
-    "the", "a", "an", "we", "i", "so", "but", "and", "then", "okay",
-    "actually", "well", "um", "uh",
+    "the",
+    "a",
+    "an",
+    "we",
+    "i",
+    "so",
+    "but",
+    "and",
+    "then",
+    "okay",
+    "actually",
+    "well",
+    "um",
+    "uh",
 }
 
 
@@ -136,9 +158,8 @@ class TestCleanupStageEndToEnd:
     @pytest.mark.asyncio
     async def test_stage_reproduces_golden_from_pinned_asset(self, golden) -> None:
         provider = _ScriptedCleanupProvider(
-            golden["cleaned"], golden["original"]
-            if "original" in golden
-            else golden["raw"]
+            golden["cleaned"],
+            golden["original"] if "original" in golden else golden["raw"],
         )
         stage = CleanupStage(
             asset=ASSETS.latest(STAGE_CLEANUP),

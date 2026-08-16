@@ -21,8 +21,10 @@ from app.stages.names import PIPELINE_STAGES
 PROMPTS_DIR = Path(__file__).resolve().parent.parent / "prompts"
 PINNED_DIR = Path(__file__).resolve().parent / "fixtures" / "prompts"
 
-_KNOWN_ASSETS = frozenset(PIPELINE_STAGES) | frozenset(COMMAND_NAMES) | frozenset(
-    {CHAT_PROMPT_NAME}
+_KNOWN_ASSETS = (
+    frozenset(PIPELINE_STAGES)
+    | frozenset(COMMAND_NAMES)
+    | frozenset({CHAT_PROMPT_NAME})
 )
 
 _ASSET_FILENAME = re.compile(r"^(?P<stage>[a-z_]+)\.(?P<version>\d+)\.json$")

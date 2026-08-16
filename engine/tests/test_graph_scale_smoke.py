@@ -45,13 +45,16 @@ def _ctx() -> StageContext:
             text="raw",
             meta={"job_id": "scale-job", "language": "en"},
         ),
-        prompt_versions={s: 1 for s in (
-            STAGE_CLEANUP,
-            STAGE_CLASSIFICATION,
-            STAGE_ENTITY_EXTRACTION,
-            STAGE_KNOWLEDGE_EXTRACTION,
-            STAGE_TAGS,
-        )},
+        prompt_versions={
+            s: 1
+            for s in (
+                STAGE_CLEANUP,
+                STAGE_CLASSIFICATION,
+                STAGE_ENTITY_EXTRACTION,
+                STAGE_KNOWLEDGE_EXTRACTION,
+                STAGE_TAGS,
+            )
+        },
         budget=TOKENS,
     )
     ctx.intermediates[STAGE_CLEANUP] = {
@@ -123,6 +126,7 @@ def _synthetic_graph(seed: int) -> tuple[list[dict], list[dict]]:
             rel["target"] = rel["source"]  # self-loop
         relationships.append(rel)
     return entities, relationships
+
 
 def test_large_graph_assembles_correctly() -> None:
     entities, relationships = _synthetic_graph(seed=1)

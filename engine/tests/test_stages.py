@@ -163,7 +163,7 @@ def test_tags_stage_renders_prompt_with_transcript() -> None:
     prompt = _make_tags_stage(_ScriptedProvider()).render_user_prompt(ctx)
 
     assert "We should ship v2 by Friday." in prompt
-    assert 'json_schema_ref' not in prompt  # instruction lives in the asset
+    assert "json_schema_ref" not in prompt  # instruction lives in the asset
 
 
 def test_tags_stage_validates_output() -> None:
@@ -176,6 +176,4 @@ def test_tags_stage_validates_output() -> None:
 
 def test_tags_stage_rejects_invalid_output() -> None:
     with pytest.raises(StageOutputError):
-        _make_tags_stage(_ScriptedProvider()).validate_output(
-            {"tags": [{"name": ""}]}
-        )
+        _make_tags_stage(_ScriptedProvider()).validate_output({"tags": [{"name": ""}]})

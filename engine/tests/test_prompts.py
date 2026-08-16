@@ -57,8 +57,7 @@ def test_resolve_defaults_to_latest_for_pipeline() -> None:
 
     memory_aware = ("entity_extraction", "task_extraction", "knowledge_extraction")
     assert resolved == {
-        stage: (2 if stage in memory_aware else 1)
-        for stage in PIPELINE_STAGES
+        stage: (2 if stage in memory_aware else 1) for stage in PIPELINE_STAGES
     }
 
 

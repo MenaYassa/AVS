@@ -61,9 +61,7 @@ def store() -> _FakeStore:
 
 
 @pytest.fixture(autouse=True)
-def _hermetic_dependencies(
-    monkeypatch: pytest.MonkeyPatch, store: _FakeStore
-) -> None:
+def _hermetic_dependencies(monkeypatch: pytest.MonkeyPatch, store: _FakeStore) -> None:
     monkeypatch.setattr(search_module, "get_embedding_provider", _FakeProvider)
     monkeypatch.setattr(search_module, "get_vector_store", lambda: store)
 
@@ -126,9 +124,7 @@ def test_semantic_search_passes_query_and_user_to_store(store: _FakeStore) -> No
 
 
 def test_semantic_search_requires_auth() -> None:
-    response = client.post(
-        "/api/v1/search/semantic", json={"query": "hello"}
-    )
+    response = client.post("/api/v1/search/semantic", json={"query": "hello"})
     assert response.status_code == 401
 
 
@@ -182,9 +178,7 @@ def test_pgsql_vector_store_empty_embedding_skips_query() -> None:
     fake_pool = AsyncMock()
     store._pool = fake_pool
 
-    rows = asyncio.run(
-        store.search([], user_id="u1", limit=3, threshold=0.6)
-    )
+    rows = asyncio.run(store.search([], user_id="u1", limit=3, threshold=0.6))
 
     assert rows == []
     fake_pool.fetch.assert_not_awaited()
@@ -194,9 +188,7 @@ def test_null_vector_store_returns_empty() -> None:
     from app.vector_store import NullVectorStore
 
     rows = asyncio.run(
-        NullVectorStore().search(
-            QUERY_EMBEDDING, user_id="u1", limit=3, threshold=0.6
-        )
+        NullVectorStore().search(QUERY_EMBEDDING, user_id="u1", limit=3, threshold=0.6)
     )
     assert rows == []
 

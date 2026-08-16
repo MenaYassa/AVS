@@ -70,9 +70,7 @@ class NotionPlugin(Plugin):
             scope=payload.get("scope"),
         )
 
-    async def exchange_token(
-        self, code: str, redirect_uri: str
-    ) -> PluginCredentials:
+    async def exchange_token(self, code: str, redirect_uri: str) -> PluginCredentials:
         resp = await self.client.post(
             self.token_url,
             auth=(self.client_id, self.client_secret),
@@ -108,9 +106,7 @@ class NotionPlugin(Plugin):
                         "object": "block",
                         "type": "paragraph",
                         "paragraph": {
-                            "rich_text": [
-                                {"type": "text", "text": {"content": chunk}}
-                            ]
+                            "rich_text": [{"type": "text", "text": {"content": chunk}}]
                         },
                     }
                 )
@@ -131,9 +127,7 @@ class NotionPlugin(Plugin):
             )
         return blocks
 
-    def _transform(
-        self, draft: dict[str, Any], target: str | None
-    ) -> dict[str, Any]:
+    def _transform(self, draft: dict[str, Any], target: str | None) -> dict[str, Any]:
         parent: dict[str, Any] = (
             {"type": "page_id", "page_id": target}
             if target
@@ -209,9 +203,7 @@ class SlackPlugin(Plugin):
         )
         return f"{self.auth_base_url}?{params}"
 
-    async def exchange_token(
-        self, code: str, redirect_uri: str
-    ) -> PluginCredentials:
+    async def exchange_token(self, code: str, redirect_uri: str) -> PluginCredentials:
         resp = await self.client.post(
             self.token_url,
             data={

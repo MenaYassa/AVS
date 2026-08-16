@@ -228,13 +228,14 @@ Transcript (or any input's extracted text)
 ```python
 class Stage(Protocol):
     name: str
-    async def run(self, ctx: StageContext) -> StageContext:
-        ...
+
+    async def run(self, ctx: StageContext) -> StageContext: ...
+
 
 class StageContext:
-    input_doc: InputDoc            # transcript / extracted text / metadata
+    input_doc: InputDoc  # transcript / extracted text / metadata
     intermediates: dict[str, Any]  # outputs of earlier stages, by stage name
-    config: StageConfig            # provider, model, temperature, prompt_version
+    config: StageConfig  # provider, model, temperature, prompt_version
     budget: TokenBudget
 ```
 

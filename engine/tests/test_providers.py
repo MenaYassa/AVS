@@ -51,7 +51,7 @@ def _system_text() -> Message:
 
 class TestExtractJson:
     def test_fenced_json(self) -> None:
-        assert extract_json("```json\n{\"a\": 1}\n```") == {"a": 1}
+        assert extract_json('```json\n{"a": 1}\n```') == {"a": 1}
 
     def test_prose_with_json(self) -> None:
         text = 'Sure! Here: {"x": {"nested": [1, 2]}} done'

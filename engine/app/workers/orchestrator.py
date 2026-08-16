@@ -111,9 +111,7 @@ async def run_stages(job: Job) -> dict[str, Any]:
     ctx.intermediates.update(job.intermediates or {})  # resume (idempotent)
 
     store = get_store()
-    for stage in build_stages(
-        prompt_registry, options, budget, user_id=job.user_id
-    ):
+    for stage in build_stages(prompt_registry, options, budget, user_id=job.user_id):
         current = store.get(job.id)
         if current is None:
             raise JobFailedError(

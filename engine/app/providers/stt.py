@@ -126,9 +126,7 @@ class DeepgramSTT:
         try:
             alt = payload["results"]["channels"][0]["alternatives"][0]
         except (KeyError, IndexError, TypeError) as exc:
-            raise ProviderOutputError(
-                f"malformed Deepgram response: {exc}"
-            ) from exc
+            raise ProviderOutputError(f"malformed Deepgram response: {exc}") from exc
         text = alt.get("transcript")
         if not text:
             raise ProviderOutputError("Deepgram returned empty transcript")
@@ -186,9 +184,7 @@ class AssemblyAISTT:
         audio = await self._blob_fetcher.fetch(blob_ref)
         client, close = _client_or_shared(self._client)
         try:
-            upload = await self._request(
-                client, "POST", "/v2/upload", raw_body=audio
-            )
+            upload = await self._request(client, "POST", "/v2/upload", raw_body=audio)
             audio_url = upload.get("audio_url")
             if not audio_url:
                 raise ProviderOutputError("AssemblyAI upload missing audio_url")
@@ -203,9 +199,7 @@ class AssemblyAISTT:
             )
             transcript_id = submitted.get("id")
             if not transcript_id:
-                raise ProviderOutputError(
-                    "AssemblyAI transcript submission missing id"
-                )
+                raise ProviderOutputError("AssemblyAI transcript submission missing id")
             result = await self._poll(client, transcript_id)
         finally:
             if close:

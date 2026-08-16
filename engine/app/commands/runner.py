@@ -160,9 +160,7 @@ async def run_command(job: Job) -> dict[str, Any]:
         max_input_tokens=settings.max_input_tokens,
         max_output_tokens=settings.max_output_tokens,
     )
-    prompt = asset.user_prompt_template.format(
-        context=render_session_context(context)
-    )
+    prompt = asset.user_prompt_template.format(context=render_session_context(context))
     budget.check_input(prompt, stage=command)
 
     provider = get_llm(

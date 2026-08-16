@@ -46,6 +46,7 @@ class SentenceTransformerEmbedding:
     def _load_model(self):
         if self._model is None:
             from sentence_transformers import SentenceTransformer
+
             self._model = SentenceTransformer(self._model_name)
         return self._model
 

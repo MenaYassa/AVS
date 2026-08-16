@@ -118,7 +118,6 @@ async def test_notion_authorization_url() -> None:
     assert "redirect_uri=https%3A%2F%2Fapp%2Foauth" in url
 
 
-
 async def test_notion_exchange_and_refresh() -> None:
     plugin = await _notion()
     creds = await plugin.exchange_token("code-1", "https://app/oauth")
@@ -126,7 +125,6 @@ async def test_notion_exchange_and_refresh() -> None:
     assert creds.refresh_token == "n-refresh"
     refreshed = await plugin.refresh("n-refresh")
     assert refreshed.access_token == "n-access"
-
 
 
 async def test_notion_push_builds_page() -> None:
@@ -150,7 +148,6 @@ async def test_notion_push_builds_page() -> None:
     assert len(transform["children"]) == 3  # 2 body lines + 1 item
 
 
-
 async def test_slack_push_posts_markdown() -> None:
     plugin = await _slack()
     creds = await plugin.exchange_token("code-1", "https://app/oauth")
@@ -161,7 +158,6 @@ async def test_slack_push_posts_markdown() -> None:
     assert receipt.message == "Posted to #team"
     assert "*Report*" in plugin._markdown(draft)
     assert "• Action" in plugin._markdown(draft)
-
 
 
 async def test_slack_push_error_raises() -> None:
@@ -331,7 +327,11 @@ def test_token_exchange_connects() -> None:
     response = client.post(
         "/api/v1/plugins/notion/token",
         headers={"X-User-Id": "u1"},
-        json={"code": "code-1", "state": auth["state"], "redirect_uri": "https://app/oauth"},
+        json={
+            "code": "code-1",
+            "state": auth["state"],
+            "redirect_uri": "https://app/oauth",
+        },
     )
     assert response.status_code == 200
     assert response.json()["data"]["connected"] is True
@@ -367,7 +367,11 @@ def test_push_round_trip() -> None:
     client.post(
         "/api/v1/plugins/notion/token",
         headers={"X-User-Id": "u1"},
-        json={"code": "code-1", "state": auth["state"], "redirect_uri": "https://app/oauth"},
+        json={
+            "code": "code-1",
+            "state": auth["state"],
+            "redirect_uri": "https://app/oauth",
+        },
     )
 
     response = client.post(
@@ -397,7 +401,11 @@ def test_slack_push_round_trip() -> None:
     client.post(
         "/api/v1/plugins/slack/token",
         headers={"X-User-Id": "u1"},
-        json={"code": "code-1", "state": auth["state"], "redirect_uri": "https://app/oauth"},
+        json={
+            "code": "code-1",
+            "state": auth["state"],
+            "redirect_uri": "https://app/oauth",
+        },
     )
 
     response = client.post(
@@ -421,7 +429,11 @@ def test_disconnect() -> None:
     client.post(
         "/api/v1/plugins/notion/token",
         headers={"X-User-Id": "u1"},
-        json={"code": "code-1", "state": auth["state"], "redirect_uri": "https://app/oauth"},
+        json={
+            "code": "code-1",
+            "state": auth["state"],
+            "redirect_uri": "https://app/oauth",
+        },
     )
     assert is_connected("u1", "notion")
 

@@ -51,7 +51,9 @@ class Settings:
             "openai_whisper": os.getenv(
                 "OPENAI_WHISPER_BASE_URL", "https://api.openai.com/v1"
             ),
-            "openrouter": os.getenv("OPENROUTER_BASE_URL", "https://openrouter.ai/api/v1"),
+            "openrouter": os.getenv(
+                "OPENROUTER_BASE_URL", "https://openrouter.ai/api/v1"
+            ),
             "ollama": os.getenv("OLLAMA_BASE_URL", "http://localhost:11434/v1"),
             "lm_studio": os.getenv("LMSTUDIO_BASE_URL", "http://localhost:1234/v1"),
             "anthropic": os.getenv("ANTHROPIC_BASE_URL", "https://api.anthropic.com"),

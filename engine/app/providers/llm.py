@@ -67,9 +67,7 @@ def extract_json(text: str) -> dict[str, Any]:
                         f"provider output is not valid JSON: {exc}"
                     ) from exc
                 if not isinstance(parsed, dict):
-                    raise ProviderOutputError(
-                        "provider JSON output must be an object"
-                    )
+                    raise ProviderOutputError("provider JSON output must be an object")
                 return parsed
     raise ProviderOutputError("provider output contains no complete JSON object")
 
@@ -264,9 +262,7 @@ class AnthropicMessagesLLM:
         temperature: float | None = None,
         max_tokens: int | None = None,
     ) -> dict[str, Any]:
-        user_prompt = (
-            f"{prompt}\n\nRespond with a single JSON object and nothing else."
-        )
+        user_prompt = f"{prompt}\n\nRespond with a single JSON object and nothing else."
         payload: dict[str, Any] = {
             "model": model or self.model,
             "max_tokens": max_tokens or 4096,
@@ -340,17 +336,15 @@ class GeminiLLM:
         max_tokens: int | None = None,
     ) -> str:
         contents = [
-            {"parts": [{"text": m.content}]}
-            for m in messages
-            if m.role != "system"
+            {"parts": [{"text": m.content}]} for m in messages if m.role != "system"
         ]
         system_prompt = "\n".join(m.content for m in messages if m.role == "system")
         payload: dict[str, Any] = {
             "contents": contents,
             "generationConfig": {
-                "temperature": temperature if temperature is not None else (
-                    self._temperature if self._temperature is not None else 0.7
-                ),
+                "temperature": temperature
+                if temperature is not None
+                else (self._temperature if self._temperature is not None else 0.7),
                 "maxOutputTokens": max_tokens or 1024,
             },
         }
@@ -372,9 +366,9 @@ class GeminiLLM:
             "contents": [{"parts": [{"text": prompt}]}],
             "generationConfig": {
                 "responseMimeType": "application/json",
-                "temperature": temperature if temperature is not None else (
-                    self._temperature if self._temperature is not None else 0.2
-                ),
+                "temperature": temperature
+                if temperature is not None
+                else (self._temperature if self._temperature is not None else 0.2),
                 "maxOutputTokens": max_tokens or 4096,
             },
         }

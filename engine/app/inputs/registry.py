@@ -75,8 +75,10 @@ def get_input_source(
     parser: DocumentParserProvider | None = None,
 ) -> InputSource:
     if kind == "voice":
-        provider = transcriber if transcriber is not None else get_transcriber(
-            stt_provider, user_id=user_id
+        provider = (
+            transcriber
+            if transcriber is not None
+            else get_transcriber(stt_provider, user_id=user_id)
         )
         return VoiceInputSource(provider)
     if kind == "transcript":

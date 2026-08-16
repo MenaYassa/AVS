@@ -47,7 +47,7 @@ def _docx_bytes(paragraphs: list[str]) -> bytes:
 def _odt_bytes(paragraphs: list[str]) -> bytes:
     xml = (
         '<?xml version="1.0" encoding="UTF-8"?>'
-        '<office:document-content '
+        "<office:document-content "
         'xmlns:office="urn:oasis:names:tc:opendocument:xmlns:office:1.0" '
         'xmlns:text="urn:oasis:names:tc:opendocument:xmlns:text:1.0">'
         "<office:body><office:text>"
@@ -139,9 +139,7 @@ async def test_rtf_extracts_text() -> None:
 
 
 async def test_docx_extracts_paragraphs() -> None:
-    parser = _parser(
-        {"a.docx": _docx_bytes(["First paragraph.", "Second paragraph."])}
-    )
+    parser = _parser({"a.docx": _docx_bytes(["First paragraph.", "Second paragraph."])})
     result = await parser.parse("a.docx", mime_type=_DOCX_MIME)
     assert result.text == "First paragraph.\nSecond paragraph."
 

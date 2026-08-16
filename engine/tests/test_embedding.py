@@ -84,9 +84,9 @@ class TestEmbeddingStage:
                     "items": [
                         {"content": "Item 1 content"},
                         {"content": "Item 2 content"},
-                    ]
+                    ],
                 }
-            ]
+            ],
         }
         return ctx
 

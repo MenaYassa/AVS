@@ -119,9 +119,7 @@ class Plugin:
     def authorization_url(self, redirect_uri: str, state: str) -> str:
         raise NotImplementedError
 
-    async def exchange_token(
-        self, code: str, redirect_uri: str
-    ) -> PluginCredentials:
+    async def exchange_token(self, code: str, redirect_uri: str) -> PluginCredentials:
         raise NotImplementedError
 
     async def refresh(self, refresh_token: str) -> PluginCredentials:

@@ -19,9 +19,7 @@ class CleanupStage(LLMStage):
     name = STAGE_CLEANUP
 
     def render_user_prompt(self, ctx: StageContext) -> str:
-        return self.asset.user_prompt_template.format(
-            transcript=ctx.input_doc.text
-        )
+        return self.asset.user_prompt_template.format(transcript=ctx.input_doc.text)
 
     def validate_output(self, parsed: dict[str, Any]) -> dict[str, Any]:
         try:

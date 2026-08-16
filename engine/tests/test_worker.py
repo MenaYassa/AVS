@@ -41,9 +41,7 @@ def test_process_job_rejects_non_analyze_kind_structurally() -> None:
 
 def test_process_job_fails_missing_input_structurally() -> None:
     store = get_store()
-    job = store.create(
-        _queued_job(kind=JobKind.analyze).with_updated(input_ref=None)
-    )
+    job = store.create(_queued_job(kind=JobKind.analyze).with_updated(input_ref=None))
 
     process_job(job.id)
 
