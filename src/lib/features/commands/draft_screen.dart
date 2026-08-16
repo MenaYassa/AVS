@@ -401,7 +401,7 @@ class _ItemCardState extends ConsumerState<_ItemCard> {
               runSpacing: 8,
               children: [
                 DropdownButtonFormField<ItemType?>(
-                  value: _type,
+                  initialValue: _type,
                   decoration: const InputDecoration(
                     labelText: 'Type',
                     border: OutlineInputBorder(),
@@ -419,7 +419,7 @@ class _ItemCardState extends ConsumerState<_ItemCard> {
                   }),
                 ),
                 DropdownButtonFormField<Priority?>(
-                  value: _priority,
+                  initialValue: _priority,
                   decoration: const InputDecoration(
                     labelText: 'Priority',
                     border: OutlineInputBorder(),
