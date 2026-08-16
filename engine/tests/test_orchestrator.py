@@ -545,9 +545,7 @@ async def test_resume_reruns_only_failed_stage(providers) -> None:
     assert store.get(job.id).status == JobStatus.failed
 
     providers.fail_stage = None
-    resumed = store.get(job.id).with_updated(
-        status=JobStatus.queued, error=None
-    )
+    resumed = store.get(job.id).with_updated(status=JobStatus.queued, error=None)
     store.update(resumed)
     process_job(resumed.id)
 
